@@ -37,9 +37,9 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
       const data = await response.json();
 
       if (data.success) {
-        // Fetch historical data from acchistoryid collection
+        // Fetch historical data from acchistoryids collection
         try {
-          const historyResponse = await fetch(`${API_URL}/api/acchistoryid/user/${registerNumber}`);
+          const historyResponse = await fetch(`${API_URL}/api/acchistoryids/user/${registerNumber}`);
           const historyData = await historyResponse.json();
           
           toast({
