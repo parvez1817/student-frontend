@@ -56,16 +56,17 @@ const StudentForm: React.FC<StudentFormProps> = ({ onSubmit, disabled, buttonTex
       
       const result = await response.json();
 
-      if (result.success) {
-        toast({
-          title: "Request Submitted Successfully!",
-          description: "Your ID card reissue request has been submitted for approval. Inform your CC for further process.",
-        });
-        setIsLoading(false);
-        onSubmit();
-      } else {
-        throw new Error(result.message || 'Submission failed');
-      }
+        if (result.success) {
+          toast({
+            title: "Request Submitted Successfully!",
+            description: "Your ID card reissue request has been submitted for approval. Inform your CC for further process.",
+            variant: 'default',
+          });
+          setIsLoading(false);
+          onSubmit();
+        } else {
+          throw new Error(result.message || 'Submission failed');
+        }
     } catch (error: any) {
       console.error('Form submission error:', error);
       toast({
@@ -120,6 +121,9 @@ const StudentForm: React.FC<StudentFormProps> = ({ onSubmit, disabled, buttonTex
                 value={formData.registerNumber}
                 onChange={(e) => setFormData(prev => ({ ...prev, registerNumber: e.target.value }))}
                 className="bg-white/10 border border-white/20 text-white placeholder:text-white/60 focus:bg-white/20 focus:border-blue-400 transition-all duration-300"
+                pattern="^\d{14}$"
+                title="Register number is incorrect."
+                maxLength={14}
                 required
               />
             </div>

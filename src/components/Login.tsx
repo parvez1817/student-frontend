@@ -29,36 +29,29 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
     setIsLoading(true);
     try {
-      const response = await fetch(`${API_URL}/api/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ registerNumber }),
-      });
-      const data = await response.json();
+      // Parallelize login and history fetches
+      const [loginResponse, historyResponse] = await Promise.all([
+        fetch(`${API_URL}/api/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ registerNumber }),
+        }),
+        fetch(`${API_URL}/api/acchistoryids/user/${registerNumber}`)
+      ]);
 
-      if (data.success) {
-        // Fetch historical data from acchistoryids collection
-        try {
-          const historyResponse = await fetch(`${API_URL}/api/acchistoryids/user/${registerNumber}`);
-          const historyData = await historyResponse.json();
-          
-          toast({
-            title: "Login Successful!",
-            description: "Welcome to the ID Card Portal.",
-          });
-          onLogin(registerNumber, historyData);
-        } catch (historyError) {
-          console.error('Error fetching historical data:', historyError);
-          toast({
-            title: "Login Successful!",
-            description: "Welcome to the ID Card Portal.",
-          });
-          onLogin(registerNumber, []);
-        }
+      const loginData = await loginResponse.json();
+      const historyData = await historyResponse.json();
+
+      if (loginData.success) {
+        toast({
+          title: "Login Successful!",
+          description: "Welcome to the ID Card Portal.",
+        });
+        onLogin(registerNumber, historyData);
       } else {
         toast({
           title: "Login Failed",
-          description: data.message || "Register number not found.",
+          description: loginData.message || "Register number not found.",
           variant: 'destructive',
         });
       }
