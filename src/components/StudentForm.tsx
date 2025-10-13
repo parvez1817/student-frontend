@@ -24,7 +24,6 @@ const StudentForm: React.FC<StudentFormProps> = ({ onSubmit, disabled, buttonTex
     year: '',
     section: '',
     reason: '',
-    photo: null as File | null,
     dob: '',
     libraryCode: '',
   });
@@ -42,7 +41,6 @@ const StudentForm: React.FC<StudentFormProps> = ({ onSubmit, disabled, buttonTex
     data.append('reason', formData.reason);
     data.append('dob', formData.dob);
     data.append('libraryCode', formData.libraryCode);
-    if (formData.photo) data.append('photo', formData.photo);
 
     try {
       const response = await fetch(`${API_URL}/api/idcards`, {
@@ -78,10 +76,7 @@ const StudentForm: React.FC<StudentFormProps> = ({ onSubmit, disabled, buttonTex
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) setFormData(prev => ({ ...prev, photo: file }));
-  };
+
 
   return (
     <Card className="bg-white/10 backdrop-blur-lg border border-white/20 shadow-xl">
@@ -207,7 +202,7 @@ const StudentForm: React.FC<StudentFormProps> = ({ onSubmit, disabled, buttonTex
             </div>
 
             {/* Library Code */}
-            <div className="space-y-2">
+            <div className="space-y-2 md:col-span-2">
               <label className="text-white/90 text-sm font-medium flex items-center space-x-2">
                 <BookOpen className="h-4 w-4" /> <span>Library Code</span>
               </label>
@@ -216,24 +211,12 @@ const StudentForm: React.FC<StudentFormProps> = ({ onSubmit, disabled, buttonTex
                 placeholder="Enter your library code"
                 value={formData.libraryCode}
                 onChange={(e) => setFormData(prev => ({ ...prev, libraryCode: e.target.value }))}
-                className="bg-white/10 border border-white/20 text-white placeholder:text-white/60 focus:bg-white/20 focus:border-blue-400 transition-all duration-300"
+                className="w-full bg-white/10 border border-white/20 text-white placeholder:text-white/60 focus:bg-white/20 focus:border-blue-400 transition-all duration-300"
                 required
               />
             </div>
 
-            {/* Signature Upload */}
-            <div className="space-y-2">
-              <label className="text-white/90 text-sm font-medium flex items-center space-x-2">
-                <Upload className="h-4 w-4" /> <span>Student signature photo</span>
-              </label>
-              <div className="relative">
-                <input type="file" accept="image/*" onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" required />
-                <div className="bg-white/10 border border-white/20 rounded-md p-3 text-center hover:bg-white/20 transition-colors duration-300 cursor-pointer">
-                  <Upload className="h-6 w-6 mx-auto mb-2 text-white/60" />
-                  <p className="text-white/80 text-sm">{formData.photo ? formData.photo.name : 'Click to upload photo'}</p>
-                </div>
-              </div>
-            </div>
+
           </div>
 
           {/* Reason */}
