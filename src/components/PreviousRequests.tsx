@@ -33,6 +33,7 @@ const PreviousRequests: React.FC<PreviousRequestsProps> = ({ registerNumber, his
       }
 
       try {
+<<<<<<< HEAD
         const [acceptedRes, rejectedRes] = await Promise.all([
           fetch(`${API_URL}/api/acceptedidcards/user/${registerNumber}`),
           fetch(`${API_URL}/api/rejhistoryids/user/${registerNumber}`)
@@ -50,6 +51,43 @@ const PreviousRequests: React.FC<PreviousRequestsProps> = ({ registerNumber, his
         const rejectedWithType = rejectedRequests.map(req => ({ ...req, type: 'rejected' as const }));
 
         setRequests([...acceptedWithType, ...historyData, ...rejectedWithType]);
+=======
+        console.log('Fetching accepted ID cards for register number:', registerNumber);
+        const acceptedRes = await fetch(`${API_URL}/api/acceptedidcards/user/${registerNumber}`);
+        const acceptedData = await acceptedRes.json();
+        console.log('Accepted ID cards response:', acceptedData);
+
+        let acceptedRequests: Request[] = [];
+        if (Array.isArray(acceptedData)) {
+          acceptedRequests = acceptedData;
+        } else if (Array.isArray(acceptedData.requests)) {
+          acceptedRequests = acceptedData.requests;
+        }
+
+        // Add a type field to distinguish accepted requests
+        const acceptedWithType = acceptedRequests.map(req => ({ ...req, type: 'accepted' as const }));
+
+        // Set accepted requests first combined with historical data
+        setRequests([...acceptedWithType, ...historyData]);
+
+        console.log('Fetching rejected history ID cards for register number:', registerNumber);
+        const rejectedRes = await fetch(`${API_URL}/api/rejhistoryids/user/${registerNumber}`);
+        const rejectedData = await rejectedRes.json();
+        console.log('Rejected history ID cards response:', rejectedData);
+
+        let rejectedRequests: Request[] = [];
+        if (Array.isArray(rejectedData)) {
+          rejectedRequests = rejectedData;
+        } else if (Array.isArray(rejectedData.requests)) {
+          rejectedRequests = rejectedData.requests;
+        }
+
+        // Add a type field to distinguish rejected requests
+        const rejectedWithType = rejectedRequests.map(req => ({ ...req, type: 'rejected' as const }));
+
+        // Append rejected requests to existing requests
+        setRequests(prev => [...prev, ...rejectedWithType]);
+>>>>>>> e966d431c7eec10e26604160d92118c357e40555
       } catch (err) {
         console.error('Error fetching ID cards:', err);
         setError('Failed to load previous requests.');

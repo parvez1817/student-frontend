@@ -33,15 +33,27 @@ const StudentForm: React.FC<StudentFormProps> = ({ onSubmit, disabled, buttonTex
     setIsLoading(true);
 
     const data = new FormData();
+<<<<<<< HEAD
     Object.entries(formData).forEach(([key, value]) => {
       data.append(key, value);
     });
+=======
+    data.append('name', formData.name);
+    data.append('registerNumber', formData.registerNumber);
+    data.append('department', formData.department);
+    data.append('year', formData.year);
+    data.append('section', formData.section);
+    data.append('reason', formData.reason);
+    data.append('dob', formData.dob);
+    data.append('libraryCode', formData.libraryCode);
+>>>>>>> e966d431c7eec10e26604160d92118c357e40555
 
     try {
       const response = await fetch(`${API_URL}/api/idcards`, {
         method: 'POST',
         body: data
       });
+<<<<<<< HEAD
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -59,6 +71,26 @@ const StudentForm: React.FC<StudentFormProps> = ({ onSubmit, disabled, buttonTex
       } else {
         throw new Error(result.message || 'Submission failed');
       }
+=======
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const result = await response.json();
+
+        if (result.success) {
+          toast({
+            title: "Request Submitted Successfully!",
+            description: "Your ID card reissue request has been submitted for approval. Inform your CC for further process.",
+            variant: 'default',
+          });
+          setIsLoading(false);
+          onSubmit();
+        } else {
+          throw new Error(result.message || 'Submission failed');
+        }
+>>>>>>> e966d431c7eec10e26604160d92118c357e40555
     } catch (error: any) {
       console.error('Form submission error:', error);
       toast({
@@ -66,7 +98,10 @@ const StudentForm: React.FC<StudentFormProps> = ({ onSubmit, disabled, buttonTex
         description: error.message || 'There was an error submitting your request.',
         variant: 'destructive',
       });
+<<<<<<< HEAD
     } finally {
+=======
+>>>>>>> e966d431c7eec10e26604160d92118c357e40555
       setIsLoading(false);
     }
   };

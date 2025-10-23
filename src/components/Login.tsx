@@ -29,14 +29,19 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
     setIsLoading(true);
     try {
+<<<<<<< HEAD
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
 
+=======
+      // Parallelize login and history fetches
+>>>>>>> e966d431c7eec10e26604160d92118c357e40555
       const [loginResponse, historyResponse] = await Promise.all([
         fetch(`${API_URL}/api/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ registerNumber }),
+<<<<<<< HEAD
           signal: controller.signal,
         }),
         fetch(`${API_URL}/api/acchistoryids/user/${registerNumber}`, {
@@ -46,6 +51,12 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
       clearTimeout(timeoutId);
 
+=======
+        }),
+        fetch(`${API_URL}/api/acchistoryids/user/${registerNumber}`)
+      ]);
+
+>>>>>>> e966d431c7eec10e26604160d92118c357e40555
       const loginData = await loginResponse.json();
       const historyData = await historyResponse.json();
 
@@ -64,6 +75,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
       }
     } catch (error) {
       console.error('Login error:', error);
+<<<<<<< HEAD
       if (error instanceof Error && error.name === 'AbortError') {
         toast({
           title: "Request Timeout",
@@ -77,6 +89,13 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
           variant: 'destructive',
         });
       }
+=======
+      toast({
+        title: "Login Error",
+        description: "Something went wrong. Please try again.",
+        variant: 'destructive',
+      });
+>>>>>>> e966d431c7eec10e26604160d92118c357e40555
     } finally {
       setIsLoading(false);
     }

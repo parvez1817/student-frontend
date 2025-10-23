@@ -21,6 +21,20 @@ const LiveTracking: React.FC<LiveTrackingProps> = ({
   printingActive,
   readyForPickup,
 }) => {
+<<<<<<< HEAD
+=======
+  // Debug logging
+  React.useEffect(() => {
+    console.log(
+      'LiveTracking - currentStep:',
+      currentStep,
+      'printingActive:',
+      printingActive,
+      'readyForPickup:',
+      readyForPickup
+    );
+  }, [currentStep, printingActive, readyForPickup]);
+>>>>>>> e966d431c7eec10e26604160d92118c357e40555
 
   const trackingSteps: TrackingStep[] = [
     {
@@ -106,6 +120,19 @@ const LiveTracking: React.FC<LiveTrackingProps> = ({
     return currentStep;
   };
 
+<<<<<<< HEAD
+=======
+  // Debug function to log step statuses
+  React.useEffect(() => {
+    if (printingActive || readyForPickup || currentStep > 0) {
+      console.log('Step statuses:');
+      trackingSteps.forEach((step) => {
+        const status = getStepStatus(step.id, step.title);
+        console.log(`- ${step.title}: ${status}`);
+      });
+    }
+  }, [printingActive, readyForPickup, currentStep]);
+>>>>>>> e966d431c7eec10e26604160d92118c357e40555
 
   const showNoFormState = printingActive && currentStep === 0;
 

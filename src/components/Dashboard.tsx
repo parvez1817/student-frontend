@@ -83,6 +83,10 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout, registerNumber, onLogin
 
   useEffect(() => {
     if (statusData?.success) {
+<<<<<<< HEAD
+=======
+      console.log('Comprehensive status response:', statusData);
+>>>>>>> e966d431c7eec10e26604160d92118c357e40555
       const { status, formEnabled, buttonText, details } = statusData;
 
       setIsPrintingActive(details.isPrinting);
@@ -93,6 +97,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout, registerNumber, onLogin
       setFormEnabled(formEnabled);
       setButtonText(buttonText);
 
+<<<<<<< HEAD
       const stepMap = {
         'under-review': 2,
         'approved-printing': 3,
@@ -101,6 +106,30 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout, registerNumber, onLogin
       };
       setCurrentStep(stepMap[status] || 0);
     } else if (statusData && !statusData.success) {
+=======
+      // Map status to currentStep
+      switch (status) {
+        case 'under-review':
+          setCurrentStep(2); // "Under Review"
+          console.log('Setting current step to 2 (Under Review)');
+          break;
+        case 'approved-printing':
+          setCurrentStep(3); // "Approved & Printing"
+          console.log('Setting current step to 3 (Approved & Printing)');
+          break;
+        case 'ready-pickup':
+          setCurrentStep(4); // "Ready for Pickup"
+          console.log('Setting current step to 4 (Ready for Pickup)');
+          break;
+        case 'none':
+        default:
+          setCurrentStep(0); // No request submitted
+          console.log('Setting current step to 0 (No request)');
+          break;
+      }
+    } else if (statusData && !statusData.success) {
+      // Fallback to default state if API fails
+>>>>>>> e966d431c7eec10e26604160d92118c357e40555
       setIsPrintingActive(false);
       setIsReadyForPickup(false);
       setFormEnabled(true);
@@ -111,6 +140,10 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout, registerNumber, onLogin
 
   useEffect(() => {
     if (rejectedData?.found && rejectedData.rejectedCard) {
+<<<<<<< HEAD
+=======
+      console.log('Rejected ID card check response:', rejectedData);
+>>>>>>> e966d431c7eec10e26604160d92118c357e40555
       setRejectedCardData(rejectedData.rejectedCard);
       setShowRejectedPopup(true);
     }
@@ -119,12 +152,33 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout, registerNumber, onLogin
   const isLoading = statusLoading || rejectedLoading;
 
   const handleFormSubmit = () => {
+<<<<<<< HEAD
     if (isPrintingActive) return;
 
     setCurrentStep(1);
     setTimeout(() => {
       if (!isPrintingActive) setCurrentStep(2);
     }, 2000);
+=======
+    // If already in printing status, don't change the step
+    if (isPrintingActive) {
+      console.log('User is already in printing status, keeping current step');
+      return;
+    }
+
+    setCurrentStep(1); // Move to "Request Submitted"
+    console.log('Form submitted, moving to step 1 (Request Submitted)');
+
+    // Simulate progression through steps
+    setTimeout(() => {
+      if (!isPrintingActive) {
+        setCurrentStep(2); // Move to "Under Review"
+        console.log('Moving to step 2 (Under Review)');
+      }
+    }, 2000);
+
+    // Note: Steps 3 and 4 would be triggered by teacher/admin actions in a real app
+>>>>>>> e966d431c7eec10e26604160d92118c357e40555
   };
 
   const handleTransferToHistory = async () => {
